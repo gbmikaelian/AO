@@ -4,8 +4,13 @@ import fs from 'fs';
 
 export default class extends Controller {
     static async createXLS (req, res) {
+        const filePath = `public/uploads/${req.file.filename}`;
         try {
-            const filePath = `public/uploads/${req.file.filename}`;
+            const [, fileType] = req.file.mimetype.split('/');
+            if (!['json', 'xlsx'].includes(fileType)) {
+                throw new Error('Invalid file format');
+            }
+
             let jsonData = fs.readFileSync(filePath);
             jsonData = JSON.parse(jsonData);
 
@@ -19,7 +24,8 @@ export default class extends Controller {
             fs.unlinkSync(filePath);
             return res.json({ success: true, data: { xlsxPath } });
         } catch (e) {
-            console.log(e);
+            console.log(e.message);
+            fs.unlinkSync(filePath);
             return res.json({ success: false, error: e.message });
         }
     }
