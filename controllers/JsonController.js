@@ -20,8 +20,8 @@ export default class extends Controller {
 
             if (fileType === 'json') {
                 let jsonData = fs.readFileSync(filePath);
-                const data = super.jsonToXLSX(jsonData, filePath);
-                var buffer = xlsx.build([{ name: 'xlsx', data: data }]);
+                const data = super.jsonToXLSX(jsonData);
+                var buffer = xlsx.build([{ name: 'xlsx', data }]);
                 const xlsxPath = `public/xlsx/${req.file.filename}.xlsx`;
 
                 fs.writeFileSync(xlsxPath, buffer, 'binary');

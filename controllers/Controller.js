@@ -7,13 +7,14 @@ let stringKey = '';
 
 function toXLSX (json) {
     let array = [];
-    // let keyString = '';
+    let temp = [];
     for (let key in json) {
         let value = json[key];
-
-        if (typeof json[key] === 'object' && json[key] !== null && !Array.isArray(value)) {
-            stringKey += `${key}.`;
-            toXLSX(json[key]);
+        if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+            temp.push(() => {
+                stringKey += `${key}.`;
+                toXLSX(value);
+            });
         } else {
             if (typeof value === 'boolean') {
                 value = value.toString();
@@ -25,6 +26,8 @@ function toXLSX (json) {
     }
     concatArray = [...concatArray, ...array];
 
+    temp.forEach(f => f());
+    temp = [];
     return concatArray;
 }
 
