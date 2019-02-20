@@ -7,6 +7,6 @@ const router = new Router();
 var upload = multer({ dest: 'public/uploads' });
 
 router.get('/me', UserController.me);
-router.post('/upload-json', upload.single('json'), JsonController.createXLS);
+router.post('/upload-json', upload.single('file'), JsonController.createXLS);
 
 export default router;

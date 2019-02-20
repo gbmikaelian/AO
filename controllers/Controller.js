@@ -29,9 +29,15 @@ function toXLSX (json) {
 }
 
 export default class {
-    static jsonToXLSX (json) {
+    static jsonToXLSX (jsonData) {
+        const json = JSON.parse(jsonData);
         concatArray = [];
         stringKey = '';
         return toXLSX(json);
+    }
+
+    static xlsxToJSON (file) {
+        // to do
+        return file;
     }
 }
