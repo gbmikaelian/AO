@@ -46,7 +46,8 @@ export default class UploadJsonXlsx extends Controller {
             keys = this.underscoreToCamel(property).split('.');
             temp = result;
 
-            for (let i = 0; i < keys.length - 1; i++) {
+            let i;
+            for (i = 0; i < keys.length - 1; i++) {
                 if (typeof temp[keys[i]] === 'undefined') {
                     temp[keys[i]] = {};
                 }
