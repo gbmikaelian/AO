@@ -13,7 +13,9 @@ export default class extends Controller {
                 }
             });
 
-            const [, fileType] = req.file.originalname.split('.');
+            let fileType = req.file.originalname.split('.');
+            fileType = fileType[fileType.length - 1];
+
             if (!['json', 'xlsx'].includes(fileType)) {
                 throw new Error('Invalid file format');
             }
