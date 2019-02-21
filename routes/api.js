@@ -4,7 +4,7 @@ import multer from 'multer';
 
 const router = new Router();
 
-var upload = multer({ dest: 'public/uploads' });
+const upload = multer({ dest: 'public/uploads' });
 const jsonController = new JsonController();
 router.get('/me', UserController.me);
 router.post('/upload-json', upload.single('file'), jsonController.createXLS);

@@ -38,15 +38,15 @@ export default class UploadJsonXlsx extends Controller {
     }
 
     parse (object) {
-        var result = {};
-        var temp = {};
-        var keys;
+        const result = {};
+        let temp = {};
+        let keys;
 
-        for (var property in object) {
+        for (let property in object) {
             keys = this.underscoreToCamel(property).split('.');
             temp = result;
 
-            for (var i = 0; i < keys.length - 1; i++) {
+            for (let i = 0; i < keys.length - 1; i++) {
                 if (typeof temp[keys[i]] === 'undefined') {
                     temp[keys[i]] = {};
                 }
