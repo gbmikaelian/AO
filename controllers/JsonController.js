@@ -1,7 +1,9 @@
 import Controller from './Controller';
 import xlsx from 'node-xlsx';
 import fs from 'fs';
+import UploadJsonXlsx from '../utils/UploadJsonXlsx';
 
+const uploadJsonXlsx = new UploadJsonXlsx();
 export default class extends Controller {
     static async createXLS (req, res) {
         const filePath = `public/uploads/${req.file.filename}`;
@@ -22,13 +24,13 @@ export default class extends Controller {
             let responsePath = '';
             if (fileType === 'json') {
                 let jsonData = fs.readFileSync(filePath);
-                const data = super.jsonToXLSX(jsonData);
+                const data = uploadJsonXlsx.jsonToXLSX(jsonData);
                 let buffer = xlsx.build([{ name: 'xlsx', data }]);
                 responsePath = `public/xlsx/${req.file.filename}.xlsx`;
 
                 fs.writeFileSync(responsePath, buffer, 'binary');
             } else if (fileType === 'xlsx') {
-                let buffer = super.xlsxToJSON(req.file);
+                let buffer = uploadJsonXlsx.xlsxToJSON(req.file);
                 responsePath = `public/jsons/${req.file.filename}.json`;
                 fs.writeFileSync(responsePath, JSON.stringify(buffer), 'utf8');
             }
