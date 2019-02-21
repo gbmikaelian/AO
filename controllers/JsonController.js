@@ -19,25 +19,27 @@ export default class extends Controller {
             if (!['json', 'xlsx'].includes(fileType)) {
                 throw new Error('Invalid file format');
             }
-
+            let responsePath = '';
             if (fileType === 'json') {
                 let jsonData = fs.readFileSync(filePath);
                 const data = super.jsonToXLSX(jsonData);
                 let buffer = xlsx.build([{ name: 'xlsx', data }]);
-                const xlsxPath = `public/xlsx/${req.file.filename}.xlsx`;
+                responsePath = `public/xlsx/${req.file.filename}.xlsx`;
 
-                fs.writeFileSync(xlsxPath, buffer, 'binary');
-                return res.json({ success: true, data: { xlsxPath } });
+                fs.writeFileSync(responsePath, buffer, 'binary');
             } else if (fileType === 'xlsx') {
                 let buffer = super.xlsxToJSON(req.file);
-                let jsonPath = `public/jsons/${req.file.filename}.json`;
-                fs.writeFileSync(jsonPath, JSON.stringify(buffer), 'utf8');
-                return res.json({ success: true, data: { jsonPath } });
+                responsePath = `public/jsons/${req.file.filename}.json`;
+                fs.writeFileSync(responsePath, JSON.stringify(buffer), 'utf8');
             }
+
+            if (fs.existsSync(responsePath))
+
+            return res.json({ success: true, data: { responsePath } });
         } catch (e) {
             console.log(e.message);
             fs.unlinkSync(filePath);
-            return res.json({ success: false, error: e.message });
+            return res.status(400).json({ success: false, error: e.message });
         }
     }
 }
