@@ -1,10 +1,14 @@
 import fs from 'fs';
 import xlsx from 'node-xlsx';
+import Controller from '../controllers/Controller';
 
-export default class UploadJsonXlsx {
-    constructor () {
+export default class UploadJsonXlsx extends Controller {
+    constructor (props) {
+        super(props);
+
         this.concatArray = [];
         this.stringKey = '';
+        this.phoneNumbers = ['homePhone', 'workPhone', 'mobilePhone'];
     }
 
     toXLSX (json) {
@@ -20,7 +24,7 @@ export default class UploadJsonXlsx {
             } else {
                 if (typeof value === 'boolean') {
                     value = value.toString();
-                } else if (['homePhone', 'workPhone', 'mobilePhone'].includes(key)) {
+                } else if (this.phoneNumbers.includes(key)) {
                     value = `+374${value.substr(-8)}`;
                 }
                 array = [...array, [this.camelToUnderscore(this.stringKey + key), value]];
